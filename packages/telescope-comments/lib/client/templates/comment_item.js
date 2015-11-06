@@ -72,6 +72,9 @@ Template.comment_item.helpers({
   full_date: function(){
     return this.createdAt.toString();
   },
+  commentListClass: function () {
+    return !!Comments.find({parentCommentId: this._id}).count() ? "has-comments" : "no-comments";
+  },
   childComments: function(){
     // return only child comments
     return Comments.find({parentCommentId: this._id});
@@ -106,7 +109,7 @@ var handleVoteClick = function (meteorMethodName, eventName, e, instance) {
   e.preventDefault();
   e.stopImmediatePropagation(); // needed to prevent the handler running multiple times in nested comments
   if (!Meteor.user()){
-    Router.go('atSignIn');
+    FlowRouter.go("atSignIn");
     Messages.flash(i18n.t('please_log_in_first'), 'info');
   } else {
     Meteor.call(meteorMethodName, this._id, function(error, result){

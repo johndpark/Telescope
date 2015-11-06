@@ -1,7 +1,7 @@
 Package.describe({
   name: 'telescope:users',
   summary: 'Telescope permissions.',
-  version: '0.22.2',
+  version: '0.25.5',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -10,22 +10,23 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.0']);
 
   api.use([
-    'telescope:lib@0.22.2',
-    'telescope:settings@0.22.2',
-    'telescope:i18n@0.22.2'
+    'telescope:lib@0.25.5',
+    'telescope:settings@0.25.5',
+    'telescope:i18n@0.25.5'
   ]);
 
   api.addFiles([
     'package-tap.i18n',
     'lib/namespace.js',
     'lib/roles.js',
+    'lib/config.js',
     'lib/permissions.js',
     'lib/users.js',
     'lib/avatars.js',
     'lib/callbacks.js',
     'lib/modules.js',
     'lib/helpers.js',
-    'lib/menu.js',
+    'lib/menus.js',
     'lib/pubsub.js',
     'lib/methods.js',
     'lib/routes.js'
@@ -63,7 +64,14 @@ Package.onUse(function (api) {
     'lib/client/templates/user_complete.js',
     'lib/client/templates/user_item.html',
     'lib/client/templates/user_item.js',
-    'lib/client/templates/user_profile.html'
+    'lib/client/templates/user_profile.html',
+    'lib/client/templates/user_profile.js',
+    'lib/client/templates/nav/user_menu.html',
+    'lib/client/templates/nav/user_menu.js',
+    'lib/client/templates/nav/user_menu_label.html',
+    'lib/client/templates/nav/user_menu_label.js',
+    'lib/client/templates/user_controller/user_controller.html',
+    'lib/client/templates/user_controller/user_controller.js'
   ], ['client']);
 
   api.addFiles([
@@ -71,25 +79,11 @@ Package.onUse(function (api) {
     'lib/server/create_user.js'
   ], ['server']);
 
-  api.addFiles([
-    "i18n/ar.i18n.json",
-    "i18n/bg.i18n.json",
-    "i18n/de.i18n.json",
-    "i18n/el.i18n.json",
-    "i18n/en.i18n.json",
-    "i18n/es.i18n.json",
-    "i18n/fr.i18n.json",
-    "i18n/it.i18n.json",
-    "i18n/nl.i18n.json",
-    "i18n/pl.i18n.json",
-    "i18n/pt-BR.i18n.json",
-    "i18n/ro.i18n.json",
-    "i18n/ru.i18n.json",
-    "i18n/sv.i18n.json",
-    "i18n/tr.i18n.json",
-    "i18n/vi.i18n.json",
-    "i18n/zh-CN.i18n.json"
-  ], ["client", "server"]);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
   
   api.export('Users');
 

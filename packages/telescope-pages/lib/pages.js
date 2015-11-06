@@ -22,7 +22,9 @@ Pages.schema = new SimpleSchema({
   }
 });
 
-Pages.schema.internationalize();
+Meteor.startup(function(){
+  Pages.internationalize();
+});
 
 Pages.attachSchema(Pages.schema);
 
@@ -56,4 +58,10 @@ Meteor.startup(function () {
       return Feeds.insert({title: pageTitle, content: pageContent});
     }
   });
+});
+
+Telescope.menuItems.add("adminMenu", {
+  route: 'adminPages',
+  label: "pages",
+  description: "manage_static_pages"
 });

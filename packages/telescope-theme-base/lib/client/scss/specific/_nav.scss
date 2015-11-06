@@ -11,8 +11,9 @@ $mobile-header-height: 50px;
   color: white;
   @include small{
     height: $mobile-header-height;
-    padding: 0 10px;
-    position: relative;
+    padding: 5px 10px;
+    position: fixed;
+    width: 100%;
   }
   a, a:link, a:visited{
     color: inherit;
@@ -32,7 +33,8 @@ $mobile-header-height: 50px;
 .logo{
   @include small{
     font-size: 24px;
-    white-space: nowrap;
+    overflow: hidden;
+    height: 100%;
     a{
       margin: 0 auto;
     }
@@ -42,7 +44,7 @@ $mobile-header-height: 50px;
   }
   .header &{
     @include small{
-      padding: 0 60px; // leave space for nav button on mobile
+      padding: 0 50px; // leave space for nav button on mobile
     }
   }
   .mobile-nav &{
@@ -56,17 +58,25 @@ $mobile-header-height: 50px;
     }
   }
 }
+.logo-text{
+  white-space: nowrap;
+}
 .logo-image{
-  a, img{
+  @include small{
+    height: 100%;
+  }
+  a{
     display: block;
     height: 100%;
-    width: 100%;
+    // width: 100%;
+  }
+  img{
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
   }
 }
 
 .account-link{
   display: inline-block;
-}
-.sign-in{
-  margin-right: 20px;
 }

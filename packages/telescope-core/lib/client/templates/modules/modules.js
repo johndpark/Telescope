@@ -2,33 +2,60 @@ Template.modules.helpers({
   isDebug: function () {
     return Session.get('debug');
   },
-  getZone: function () {
-    return this.zone || this.toString();
-  },
   getClass: function () {
     var zoneClass = "zone-wrapper ";
-    if (this.zoneClass)
+    if (this.zoneClass) {
       zoneClass += this.zoneClass;
+    } else {
+      zoneClass += this.zone;
+    }
     return zoneClass;
   },
   getId: function () {
     return this.wrapperId;
   },
   getModules: function () {
-    // look for the zone name in either the zone variable, or the data context itself
-    var zone = this.zone || this.toString();
-    var moduleClass = this.moduleClass;
-    return _.map(Telescope.modules.get(zone), function (module){
-      module.moduleClass = moduleClass;
-      return module;
+    var modules = this;
+
+    var zoneModules = Telescope.modules.get(modules.zone).map(function (module) {
+
+      // use deep copy to avoid modifying original module when extending it with modules property
+      var newModule = jQuery.extend(true, {}, module);
+      newModule.modules = modules;
+      return newModule;
+
     });
+
+    return zoneModules;
+  },
+  showModule: function () {
+    var module = this;
+
+    // if module should only run on specific routes, test for them
+    if (module.only) {
+      if (Array.isArray(module.only)) {
+        return _.contains(module.only, FlowRouter.getRouteName());
+      } else {
+        return module.only();
+      }
+    }
+
+    // if module should *not* run on specific routes, test for them
+    if (module.except) {
+      if (Array.isArray(module.except)) {
+        return !_.contains(module.except, FlowRouter.getRouteName());
+      } else {
+        return module.except();
+      }
+    }
+
+    return true;
   },
   moduleData: function () {
-    var zoneData = this;
-    var moduleData = Template.parentData(2) || {}; // parent template might not always have data context
-    if (zoneData.moduleClass) {
-      moduleData.moduleClass = zoneData.moduleClass;
-    }
-    return moduleData;
+    var data = _.extend({
+      zone: this.modules.zone,
+      moduleClass: this.modules.moduleClass
+    }, this.modules.moduleData);
+    return data;
   }
 });

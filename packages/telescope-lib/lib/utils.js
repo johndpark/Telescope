@@ -33,7 +33,9 @@ Telescope.utils.dashToCamel = function (str) {
  * @param {String} str
  */
 Telescope.utils.camelCaseify = function(str) {
-  return this.dashToCamel(str.replace(' ', '-'));
+  str = this.dashToCamel(str.replace(' ', '-'));
+  str = str.slice(0,1).toLowerCase() + str.slice(1);
+  return str;
 };
 
 /**
@@ -53,21 +55,20 @@ Telescope.utils.trimWords = function(s, numWords) {
 };
 
 /**
+ * Trim a block of HTML code to get a clean text excerpt
+ * @param {String} html - HTML to trim.
+ */
+Telescope.utils.trimHTML = function (html, numWords) {
+  var text = Telescope.utils.stripHTML(html);
+  return Telescope.utils.trimWords(text, numWords);
+};
+
+/**
  * Capitalize a string.
  * @param {String} str
  */
 Telescope.utils.capitalise = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
-Telescope.utils.getCurrentTemplate = function() {
-  var template = Router.current().lookupTemplate();
-  // on postsDaily route, template is a function
-  if (typeof template === "function") {
-    return template();
-  } else {
-    return template;
-  }
 };
 
 Telescope.utils.t = function(message) {
@@ -111,7 +112,7 @@ Telescope.utils.getSiteUrl = function () {
  * @param {String} url - the URL to redirect
  */
 Telescope.utils.getOutgoingUrl = function (url) {
-  return Telescope.utils.getRouteUrl('out', {}, {query: {url: url}});
+  return Telescope.utils.getSiteUrl() + "out?url=" + encodeURIComponent(url);
 };
 
 // This function should only ever really be necessary server side
@@ -119,7 +120,7 @@ Telescope.utils.getOutgoingUrl = function (url) {
 // and shouldn't care about the siteUrl.
 Telescope.utils.getRouteUrl = function (routeName, params, options) {
   options = options || {};
-  var route = Router.url(
+  var route = FlowRouter.path(
     routeName,
     params || {},
     options
@@ -154,6 +155,19 @@ Telescope.utils.slugify = function (s) {
   }
 
   return slug;
+};
+
+Telescope.utils.getUnusedSlug = function (collection, slug) {
+  var suffix = "";
+  var index = 0;
+
+  // test if slug is already in use
+  while (!!collection.findOne({slug: slug+suffix})) {
+    index++;
+    suffix = "-"+index;
+  }
+
+  return slug+suffix;
 };
 
 Telescope.utils.getShortUrl = function(post) {
@@ -208,8 +222,8 @@ Telescope.utils.stripHTML = function(s) {
 };
 
 Telescope.utils.stripMarkdown = function(s) {
-  var html_body = marked(s);
-  return stripHTML(html_body);
+  var htmlBody = marked(s);
+  return Telescope.utils.stripHTML(htmlBody);
 };
 
 // http://stackoverflow.com/questions/2631001/javascript-test-for-existence-of-nested-object-key

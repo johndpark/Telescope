@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:subscribe-to-posts",
   summary: "Subscribe to posts to be notified when they get new comments",
-  version: "0.22.2",
+  version: "0.25.5",
   git: "https://github.com/TelescopeJS/telescope-subscribe-to-posts.git"
 });
 
@@ -14,7 +14,7 @@ Package.onUse(function (api) {
 
   // automatic (let the package specify where it's needed)
 
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.25.5']);
 
   // ---------------------------------- 2. Files to include ----------------------------------
 
@@ -36,8 +36,7 @@ Package.onUse(function (api) {
     'lib/client/templates/post_subscribe.html',
     'lib/client/templates/post_subscribe.js',
     'lib/client/templates/user_subscribed_posts.html',
-    'lib/client/templates/user_subscribed_posts.js',
-    'lib/client/stylesheets/subscribe-to-posts.scss'
+    'lib/client/templates/user_subscribed_posts.js'
   ], ['client']);
 
   // server
@@ -48,9 +47,11 @@ Package.onUse(function (api) {
 
   // i18n languages (must come last)
 
-  api.addFiles([
-    'i18n/en.i18n.json',
-  ], ['client', 'server']);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export([
     'subscribeItem',

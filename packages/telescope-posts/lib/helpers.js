@@ -12,13 +12,31 @@ Posts.getLink = function (post, isAbsolute) {
 Posts.helpers({getLink: function (isAbsolute) {return Posts.getLink(this, isAbsolute);}});
 
 /**
+ * Depending on the settings, return either a post's URL link (if it has one) or its page URL.
+ * @param {Object} post
+ */
+Posts.getShareableLink = function (post) {
+  return Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true);
+};
+Posts.helpers({getShareableLink: function () {return Posts.getShareableLink(this);}});
+
+/**
+ * Whether a post's link should open in a new tab or not
+ * @param {Object} post
+ */
+Posts.getLinkTarget = function (post) {
+  return !!post.url ? "_blank" : "";
+};
+Posts.helpers({getLinkTarget: function () {return Posts.getLinkTarget(this);}});
+
+/**
  * Get URL of a post page.
  * @param {Object} post
  */
 Posts.getPageUrl = function(post, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + Router.path("post_page", post);
+  return prefix + FlowRouter.path("postPage", post);
 };
 Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, isAbsolute);}});
 
@@ -29,7 +47,7 @@ Posts.helpers({getPageUrl: function (isAbsolute) {return Posts.getPageUrl(this, 
 Posts.getEditUrl = function(post, isAbsolute){
   var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
   var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
-  return prefix + Router.path("post_edit", post);
+  return prefix + FlowRouter.path("postEdit", post);
 };
 Posts.helpers({getEditUrl: function (isAbsolute) {return Posts.getEditUrl(this, isAbsolute);}});
 
@@ -67,22 +85,27 @@ Posts.getDefaultStatus = function (user) {
 };
 
 /**
+ * Check if a post is approved
+ * @param {Object} post
+ */
+Posts.isApproved = function (post) {
+  return post.status === Posts.config.STATUS_APPROVED;
+};
+Posts.helpers({isApproved: function () {return Posts.isApproved(this);}});
+
+/**
  * Check to see if post URL is unique.
  * We need the current user so we know who to upvote the existing post as.
  * @param {String} url
- * @param {Object} currentUser
  */
-Posts.checkForSameUrl = function (url, currentUser) {
+Posts.checkForSameUrl = function (url) {
 
   // check that there are no previous posts with the same link in the past 6 months
   var sixMonthsAgo = moment().subtract(6, 'months').toDate();
   var postWithSameLink = Posts.findOne({url: url, postedAt: {$gte: sixMonthsAgo}});
 
-  if(typeof postWithSameLink !== 'undefined'){
-    Telescope.upvoteItem(Posts, postWithSameLink, currentUser);
-
-    // note: error.details returns undefined on the client, so add post ID to reason
-    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted') + '|' + postWithSameLink._id, postWithSameLink._id);
+  if (typeof postWithSameLink !== 'undefined') {
+    throw new Meteor.Error('603', i18n.t('this_link_has_already_been_posted'), postWithSameLink._id);
   }
 };
 
@@ -90,7 +113,7 @@ Posts.checkForSameUrl = function (url, currentUser) {
  * When on a post page, return the current post
  */
 Posts.current = function () {
-  return Posts.findOne(Router.current().data().post._id);
+  return Posts.findOne(FlowRouter.getParam("_id"));
 };
 
 /**

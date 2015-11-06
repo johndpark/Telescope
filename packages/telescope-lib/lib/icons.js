@@ -9,15 +9,16 @@ Telescope.utils.getIcon = function (iconName, iconClass) {
   var icons = Telescope.utils.icons;
   var iconCode = !!icons[iconName] ? icons[iconName] : iconName;
   var iconClass = (typeof iconClass === 'string') ? ' '+iconClass : '';
-  return '<i class="icon fa fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
+  return '<i class="icon fa fa-fw fa-' + iconCode + ' icon-' + iconName + iconClass+ '" aria-hidden="true"></i>';
 };
 
 /**
  * A directory of icon keys and icon codes
  */
 Telescope.utils.icons = {
-  expand: "plus",
-  collapse: "minus",
+  expand: "angle-right",
+  collapse: "angle-down",
+  next: "angle-right",
   close: "times",
   upvote: "chevron-up",
   voted: "check",
@@ -36,5 +37,11 @@ Telescope.utils.icons = {
   popularity: "fire",
   time: "clock-o",
   best: "star",
-  search: "search"
+  search: "search",
+  edit: "pencil",
+  approve: "check-circle-o",
+  reject: "times-circle-o",
+  views: "eye",
+  clicks: "mouse-pointer", 
+  score: "line-chart"
 };

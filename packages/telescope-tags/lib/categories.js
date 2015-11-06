@@ -28,27 +28,30 @@ Categories.schema = new SimpleSchema({
     type: String,
     optional: true,
     editableBy: ["admin"]
+  },
+  parentId: {
+    type: String,
+    optional: true,
+    editableBy: ["admin"],
+    autoform: {
+      options: function () {
+        var categories = Categories.find().map(function (category) {
+          return {
+            value: category._id,
+            label: category.name
+          };
+        });
+        return categories;
+      }
+    }
   }
 });
 
-Categories.schema.internationalize();
+Meteor.startup(function(){
+  Categories.internationalize();
+});
 
 Categories.attachSchema(Categories.schema);
-
-Categories.before.insert(function (userId, doc) {
-  // if no slug has been provided, generate one
-  if (!doc.slug)
-    doc.slug = Telescope.utils.slugify(doc.name);
-});
-
-// category post list parameters
-Posts.views.add("category", function (terms) {
-  var categoryId = Categories.findOne({slug: terms.category})._id;
-  return {
-    find: {'categories': {$in: [categoryId]}} ,
-    options: {sort: {sticky: -1, score: -1}} // for now categories views default to the "top" view
-  };
-});
 
 Meteor.startup(function () {
   Categories.allow({
@@ -58,17 +61,34 @@ Meteor.startup(function () {
   });
 });
 
-getPostCategories = function (post) {
-  return !!post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
-};
 
-Categories.getUrl = function(slug){
-  return Router.path("posts_category", {slug: slug});
-};
-
-// add callback that adds categories CSS classes
-function addCategoryClass (post, postClass) {
-  var classArray = _.map(getPostCategories(post), function (category){return "category-"+category.slug;});
-  return postClass + " " + classArray.join(' ');
-}
-Telescope.callbacks.add("postClass", addCategoryClass);
+Settings.addField([
+  {
+    fieldName: 'categoriesBehavior',
+    fieldSchema: {
+      type: String,
+      optional: true,
+      autoform: {
+        group: 'categories',
+        instructions: 'Let users filter by one or multiple categories at a time.', 
+        options: function () {
+          return [
+            {value: "single", label: i18n.t("categories_behavior_one_at_a_time")},
+            {value: "multiple", label: i18n.t("categories_behavior_multiple")}
+          ];
+        }
+      }
+    }
+  },
+  {
+    fieldName: 'hideEmptyCategories',
+    fieldSchema: {
+      type: Boolean,
+      optional: true,
+      autoform: {
+        group: 'categories',
+        instructions: 'Hide empty categories in navigation'
+      }
+    }
+  }
+]);

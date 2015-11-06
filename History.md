@@ -1,3 +1,164 @@
+## v0.25.5 “PrefixerScope”
+
+* Various small bug fixes.
+* Added `seba:minifiers-autoprefixer` to re-enable CSS prefixing. 
+
+## v0.25.4 “PrerenderScope”
+
+* Added `telescope:prerender` package.
+* Fixed bad analytics logging.
+* Modules' `only` and `except` options can now accept functions.
+* `prefilledCategories` Session variable can now be used to prefill the categories selection checkboxes.
+* Default post fields now have an `order` (10, 20, 30, etc.).
+* i18n: Kasakh, Indonesian
+
+## v0.25.2 “MenuScope”
+
+* Added `regenerateAllThumbnails` method.
+* Fixed `postedAt` issue with pending posts. 
+* Created `postsListTop` zone and moved `messages`, `category_title`, and `views_menu` modules to it.
+* Renamed `category_menu_item` template to `categories_menu_item`.
+* Added `itemTemplate` option to menu to enable setting a custom template for all elements.
+* Created new `defaultMenuItem` template.
+* Now passing reference to whole `menu` object to each node instead of just `menuItems`.
+* Renamed `top` zone to `contentTop`.
+* Created new `contentBottom`, `postsListTop`, `postsListBottom` zones.
+* Extracted menu component into its own `utilities:menu` package.
+* Newsletter banner is now included in `contentTop` zone, not `hero`. 
+* Renamed "Outside Links Point To" setting to "RSS Links Point To".
+* Added infinite scrolling option.
+* Added one hour offset to show future posts to fix real-time bug. 
+
+## v0.25 “FlowScope”
+
+### Meteor 1.2
+
+* Updated for Meteor 1.2
+
+### Flow Router
+
+* Switched from Iron Router to Flow Router.
+* Moved auth/permission logic from router to templates.
+* Removed `/top`, `/new`, `/best`, etc. routes.
+
+### Categories
+
+* New category filter mode.
+* New settings option to switch between regular categories and filter categories. 
+* On post edit page, auto-expand selected categories. 
+* On post submission, auto-add all parents of all selected categories. 
+* Now including posts from children categories in posts category count.
+* Added option for auto-hiding empty categories. 
+* In category menu, expand category tree to show active categories. 
+
+### Other New Features
+
+* New post approval/rejection workflow: pending posts can be approved or rejected; approved posts can only be rejected; rejected posts can only be approved. 
+* Added approved/reject/delete buttons to post item actions. 
+* Added `rejected` view to show all rejected posts. 
+* `Posts.parameters.get` now iterates over the `postsParameters` callback hook to build parameters object. 
+* `Comments.parameters.get` now iterates over the `commentsParameters` callback hook to build parameters object. 
+* RSS feed and API can now both accept any post query parameter (`limit`, `view`, `cat`, `before`, `after`, etc.)
+* Now passing current user ID to `Posts.parameters.get` query constructor.
+* Added `afterEmbedlyPrefill` callback hook on client. 
+* Removing a user now gives the option to remove their posts and comments, too. 
+
+### Renamings
+
+* `postApprovedAsync` hook renamed to `postApproveAsync`, added `postRejectAsync`.
+* Changed `Posts.getSubParams` to `Posts.parameters.get`.
+* Changed `Comments.getSubParams` to `Comments.parameters.get`.
+
+### Removals
+
+* Removed `Telescope.utils.getCurrentTemplate()`;
+* Removed search logging.
+* Disabled single day view. 
+* `Posts.checkForSameUrl` doesn't auto-upvote the existing post anymore. 
+* Removed delete link from post edit page. 
+
+### Menu Component
+
+* Menu item custom data context is now passed as item.data.
+* Add nesting level CSS class to menu items. 
+
+### Other Changes
+
+* Moved schema i18n to collection level.
+* Use `Users.adminUsers` more consistently.
+* Upvote/downvote functions now take document `_id` as argument, not document object itself.
+* Using `tmeasday:publish-counts` to publish posts category counts (instead of denormalizing). 
+* Fixed delay on post submission.
+* Updated `category_title` template to handle multiple categories.
+* Fixed Subscribe to Comments feature. 
+* Fixed Safari CSS issues by enabling autoprefixer.
+* Extracted Spiderable into its own `telescope:spiderable` package. 
+
+### i18n
+
+* Korean translation.
+* Slovenian translation.
+* Italian translation.
+
+## v0.24 “SubScope2”
+
+* [BREAKING] Modules data context must now be passed on explicitely using the `moduleData` attribute. 
+* [BREAKING] Updated `category_title` template.
+* [BREAKING] Refactored `post_admin` template. Added delete link, now using icons, and moved post edit link from `post_info` to `post_admin`. 
+* When in debug mode, you can now log out information about a template to the console by clicking on it. 
+* Improved category slug generation logic to avoid duplicate slugs.
+* [BREAKING] `custom_` prefix is now always loaded last, and takes priority over every other prefix. 
+* Added Quickfit script to auto-fit site title to sidebar width in side nav layout.
+* [BREAKING] Removed menu component's `menuMode` argument, now doing menu variants via CSS and `menuClass`.
+* [BREAKING] Got rid of accordion menu variant.
+* [BREAKING] Tweaked markup of menu component.
+* Now showing "Post" button to logged out users, too. 
+* Icons are now always displayed square with fixed width.
+* [BREAKING] Added wrapper `div` to notification, user, and categories menus
+* Improved debug mode: you can now click any template to log out its information to the console. 
+* Custom menu item templates now inherit helpers from `menuItem` template. 
+* Added category hierarchy breadcrumbs to `category_title` template.
+* Post submit form now uses collapsible categories menu.
+* When adding a category to a post, all parents are now automatically added by default. 
+* Added `Category.postsCount` to keep track of how many posts are in a category. 
+* Now filtering out categories with no posts from the categories menu. 
+* Added `postDeleteAsync` callback hook. 
+* Now publishing all public user data all the time to work around nested fields subscriptions bug. 
+* Categories with same name now get different, unique slugs. 
+* Now getting link source name and URL from Embedly if available.
+* [BREAKING] Renamed `posts_views_nav` to `views_menu`. 
+* Added `Telescope.modules.addRoute` to add new routes to existing modules.
+
+## v0.23 “SubScope”
+
+* Template modules now take `only` and `except` options to only display on specific routes.
+* Now only caching first 15 days of `posts_daily` view.
+* Added `okgrow:iron-router-autoscroll` package.
+* Small tweaks to search UX.
+* [BREAKING] Use collection helpers instead of `postLink` and `target` in `post_title` and `post_thumbnail`.
+* [BREAKING] Use collection helpers instead of `pathFor` in `post_comments_link` and `post_discuss`.
+* Added new i18n strings.
+* Modified custom template prefix system to accept multiple prefixes.
+* [BREAKING] Changed `Telescope.config.customPrefix = "foo"` to `Telescope.config.addCustomPrefix("foo")`.
+* Added new `facebookPage` setting.
+* Added category description to category menu, when it exists.
+* Fixed post category and post thumbnail CSS classes. 
+* Switched back to `aldeed:autoform` instead of `sacha:autoform`.
+* Updated to Meteor 1.1.0.3.
+* Added support for menu hierarchies.
+* Added hierarchical categories. 
+* Now only showing "play" button for actual videos.
+* Not subscribing to `postsListUsers` on user profile page anymore.
+* Added per-category RSS routes (thanks @lewisnyman!)
+* Now showing top comments in email newsletter (thanks @sungwoncho!)
+* Fixed blank URL edit bug (thanks @johnthepink!)
+* Added `.posts-day` wrapper in `posts-daily` template.
+* [BREAKING] menu label template must now be specified using `menuLabelTemplate` option in menu component.
+* Menu label template data context can now be specified using `menuLabelData` option. 
+* `user_menu` template and its helpers moved from `telescope:core` to `telescope:users`.
+* Now recalculating email hash whenever email changes.
+* Added user avatar to user menu in nav. 
+
 ## v0.22.2
 
 * Made `approvePost` and `unapprovePost` methods take `postId` instead of `post` as argument and fixed approve/unapprove bug. 

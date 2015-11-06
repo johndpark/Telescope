@@ -1,16 +1,4 @@
-var post = {};
-
-Template.post_item.created = function () {
-  post = this.data;
-};
-
 Template.post_item.helpers({
-  moduleContext: function () { // not used for now
-    var module = this;
-    module.templateClass = Telescope.utils.camelToDash(this.template) + ' ' + this.position + ' cell';
-    module.post = post;
-    return module;
-  },
   postClass: function () {
     var post = this;
     var postClass = "post ";
@@ -20,8 +8,7 @@ Template.post_item.helpers({
     if (this.sticky) {
       postClass += "sticky ";
     }
-
-    postClass = Telescope.callbacks.run(post, postClass);
+    postClass = Telescope.callbacks.run("postClass", postClass, post);
     return postClass;
   }
 });

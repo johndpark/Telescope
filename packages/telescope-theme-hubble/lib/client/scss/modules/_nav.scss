@@ -5,9 +5,13 @@
 //		b. Side nav
 
 .header{
-	background-color:$highlight-color;
-	position:relative;
 	z-index: 100;
+	@include small{
+		box-shadow: 0px 1px 3px black(0.2);
+	}
+	@include medium-large{
+		position:relative;
+	}
 }
 .logo{
 	line-height: 1;
@@ -16,7 +20,7 @@
 		color:white;
 	}
 }
-.sign-in{
+.sign-up{
 	margin-right: 10px;
 }
 .nav{
@@ -48,20 +52,37 @@
 .newsletter-dismiss{
 	line-height: 30px !important;
 }
+
+.user-menu{
+	.avatar{
+		height: 20px;
+		width: 20px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-top: -3px;
+		margin-right: 3px;
+	}
+	.user-menu-username{
+		vertical-align: middle;
+	}
+}
+
 // ------------------------------------ Top Nav Layout ------------------------------------ //
 
 .top-nav{
 	.header{
 		height: 60px;
-		padding: 0 20px;
+		padding: 5px 20px;
 		margin-bottom:$grid-margin;
-		position: relative;
+		@include medium-large{
+			position: relative;
+		}
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 
 		@include small{
-			padding: 0 10px;
+			padding: 5px 10px;
 		}
 		.header-submodule{
 			flex-shrink: 0;
@@ -92,6 +113,13 @@
 			text-align:center;
 			color:white;
 			order: 2;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			.tagline{
+				display: none;
+			}
 			.logo-text{
 				@include small{
 					font-size: 18px;
@@ -106,6 +134,7 @@
 		}
 		.logo-image{
 			line-height: 1;
+			height: 100%;
 			a{
 				display:inline-block;
 				background: no-repeat center center;
@@ -136,55 +165,68 @@ $nav-width: 250px;
 			left: 0px;
 			height: 100%;
 			overflow-y: auto;
-			padding-bottom: 30px;
+			display: flex;
+			flex-direction:column;
+			justify-content: space-between;
 		}
 		.logo{
 			text-align: left;
-			&.logo-image{
+			.logo-image{
 				text-align: center;
 				a{
 					margin: 0 auto;
 				}
 			}
 			@include medium-large{
-				margin-bottom: 30px;
+				margin-bottom: 15px;
 			}
 		}
-		.header-submodule{
-			margin-bottom: 30px;
-			// &:last-of-type{
-			// 	margin-bottom: 0px;
-			// }
-		}
+		// .header-module{
+		// 	margin-bottom: 15px;
+		// 	&:last-of-type{
+		// 		margin-bottom: 0px;
+		// 	}
+		// }
 		.primary-nav{
+			flex-grow: 2;
 			display: flex;
 			flex-direction: column;
+			margin-bottom: 15px;
+			.header-submodule{
+				margin-bottom: 20px;
+			}
+		}
+		.secondary-nav{
+			.header-submodule{
+				margin-bottom: 10px;
+				&:last-of-type{
+					margin-bottom: 0;
+				}
+			}
 		}
 		.search{
 			order: 1;
 		}
-		.categories-menu{
+		.categories-menu-wrapper{
 			order: 2;
-		}
-		.menu-label{
-			display: block;
 		}
 		.menu-description{
 			// display: block;
 			display: none;
 			font-weight: normal;
 		}
-		.account-link{
-			display: block;
-			font-weight: bold;
+		.signin-signup{
+			text-align: center;
 		}
-
 		.account-link{
-			margin: 10px 0;
 		}
 	}
 	.tagline{
 		margin-top: 10px;
+	}
+	.menu{
+	}
+	.menu.menu-expanded{
 	}
 }
 

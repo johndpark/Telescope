@@ -12,11 +12,11 @@ Template.notifications_menu.helpers({
     var notifications = getNotifications();
 
     if(notifications.length === 0){
-      notificationsCount = __('no_notifications');
+      notificationsCount = i18n.t('no_notifications');
     }else if(notifications.length === 1){
-      notificationsCount = __('1_notification');
+      notificationsCount = i18n.t('1_notification');
     }else{
-      notificationsCount = notifications.length+' '+ __('notifications');
+      notificationsCount = notifications.length+' '+ i18n.t('notifications');
     }
 
     return notificationsCount;
@@ -39,13 +39,13 @@ Template.notifications_menu.helpers({
     }
     return menuItems;
   },
-  menuMode: function () {
-    if (!!this.mobile) {
-      return 'list';
+  menuType: function () {
+    if (this.zone === "mobileNav") {
+      return 'collapsible';
     } else if (Settings.get('navLayout', 'top-nav') === 'top-nav') {
       return 'dropdown';
     } else {
-      return 'accordion';
+      return 'collapsible';
     }
   }
 });

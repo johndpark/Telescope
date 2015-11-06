@@ -57,7 +57,6 @@ accent(".toggle-actions-link");
 accent(".post-meta a:hover");
 accent(".action:hover");
 accent(".post-actions .icon");
-accent(".post-share .icon-share");
 
 accent('input[type="submit"]', 'background-color');
 accent("button", 'background-color');
@@ -73,21 +72,25 @@ accent(".login-link-text", 'background-color');
 accent(".post-category:hover", 'background-color');
 
 accent(".icon-more", "border-color");
+accent(".post-admin a:hover", "background-color");
 
 // accentContrastColor
 
 accentContrast('input[type="submit"]');
 accentContrast("button");
 accentContrast(".button");
+accentContrast(".menu-dropdown .menu-wrapper a.button");
 accentContrast(".auth-buttons #login-buttons #login-buttons-password");
 accentContrast(".btn-primary");
-accentContrast(".header .btn-primary");
+accentContrast(".btn-primary:link");
+accentContrast(".btn-primary:hover");
 accentContrast(".header .btn-primary:link");
 accentContrast(".header .btn-primary:visited");
 accentContrast(".error");
 accentContrast(".header a.mobile-menu-button");
 accentContrast("login-link-text");
 accentContrast(".post-category:hover");
+accentContrast(".post-admin a:hover", "color");
 
 // secondaryColor
 

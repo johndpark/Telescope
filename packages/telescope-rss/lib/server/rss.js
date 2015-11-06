@@ -1,6 +1,6 @@
 RSS = Npm.require('rss');
 
-getMeta = function(url) {
+getMeta = function (url) {
   var siteUrl = Settings.get('siteUrl', Meteor.absoluteUrl());
   return {
     title: Settings.get('title'),
@@ -11,10 +11,10 @@ getMeta = function(url) {
   };
 };
 
-servePostRSS = function(view, url) {
+servePostRSS = function (terms, url) {
   var feed = new RSS(getMeta(url));
 
-  var params = Posts.getSubParams({view: view, limit: 20});
+  var params = Posts.parameters.get(terms);
   delete params['options']['sort']['sticky'];
 
   Posts.find(params.find, params.options).forEach(function(post) {
@@ -26,7 +26,7 @@ servePostRSS = function(view, url) {
       author: post.author,
       date: post.postedAt,
       guid: post._id,
-      url: Settings.get("outsideLinksPointTo", "link") === "link" ? Posts.getLink(post) : Posts.getPageUrl(post, true)
+      url: Posts.getShareableLink(post)
     };
 
     if (post.thumbnailUrl) {
@@ -40,8 +40,8 @@ servePostRSS = function(view, url) {
   return feed.xml();
 };
 
-serveCommentRSS = function() {
-  var feed = new RSS(getMeta(Router.path('rss_comments')));
+serveCommentRSS = function (terms, url) {
+  var feed = new RSS(getMeta(url));
 
   Comments.find({isDeleted: {$ne: true}}, {sort: {postedAt: -1}, limit: 20}).forEach(function(comment) {
     post = Posts.findOne(comment.postId);

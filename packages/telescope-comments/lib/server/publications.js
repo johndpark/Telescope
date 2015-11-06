@@ -1,11 +1,11 @@
-Comments._ensureIndex({"postId": 1});
-
+Comments._ensureIndex({postId: 1});
+Comments._ensureIndex({parentCommentId: 1});
 
 // Publish a list of comments
 
 Meteor.publish('commentsList', function(terms) {
   if(Users.can.viewById(this.userId)){
-    var parameters = Comments.getSubParams(terms);
+    var parameters = Comments.parameters.get(terms);
     var comments = Comments.find(parameters.find, parameters.options);
   
     // if there are comments, find out which posts were commented on

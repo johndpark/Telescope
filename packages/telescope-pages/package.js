@@ -1,7 +1,7 @@
 Package.describe({
   name: "telescope:pages",
   summary: "Telescope static pages package",
-  version: "0.22.2",
+  version: "0.25.5",
   git: "https://github.com/TelescopeJS/telescope-pages.git"
 });
 
@@ -9,14 +9,14 @@ Package.onUse(function(api) {
 
   api.versionsFrom("METEOR@1.0");
   
-  api.use(['telescope:core@0.22.2']);
+  api.use(['telescope:core@0.25.5']);
 
   api.addFiles([
-    'lib/pages.js'
+    'lib/pages.js',
+    'lib/routes.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/client/routes.js',
     'lib/client/stylesheets/pages.scss',
     'lib/client/templates/page.html',
     'lib/client/templates/page.js',
@@ -32,9 +32,11 @@ Package.onUse(function(api) {
     'lib/server/publications.js'
   ], ['server']);
 
-  api.addFiles([
-    "i18n/en.i18n.json"
-  ], ["client", "server"]);
+  var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
+  var languagesPaths = languages.map(function (language) {
+    return "i18n/"+language+".i18n.json";
+  });
+  api.addFiles(languagesPaths, ["client", "server"]);
 
   api.export([
     'Pages'

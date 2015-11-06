@@ -64,7 +64,10 @@ Comments.schema = new SimpleSchema({
     max: 3000,
     editableBy: ["member", "admin"],
     autoform: {
-      rows: 5
+      rows: 5,
+      afFormGroup: {
+        'formgroup-class': 'hide-label'
+      }
     }
   },
   /**
@@ -161,7 +164,11 @@ Comments.schema = new SimpleSchema({
   }
 });
 
-Comments.schema.internationalize();
+Meteor.startup(function(){
+  // needs to happen after every fields are added
+  Comments.internationalize();
+});
+
 Comments.attachSchema(Comments.schema);
 
 Comments.allow({

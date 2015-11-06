@@ -1,12 +1,12 @@
 Template.post_admin.helpers({
   showApprove: function () {
-    return this.status === Posts.config.STATUS_PENDING;
+    return !!Settings.get('requirePostsApproval') && (this.status === Posts.config.STATUS_PENDING || this.status === Posts.config.STATUS_REJECTED);
   },
-  showUnapprove: function(){
-    return !!Settings.get('requirePostsApproval') && this.status === Posts.config.STATUS_APPROVED;
+  showReject: function(){
+    return !!Settings.get('requirePostsApproval') && (this.status === Posts.config.STATUS_PENDING || this.status === Posts.config.STATUS_APPROVED);
   },
   shortScore: function(){
-    return Math.floor(this.score*1000)/1000;
+    return Math.floor(this.score*100)/100;
   }
 });
 
@@ -15,8 +15,25 @@ Template.post_admin.events({
     Meteor.call('approvePost', this._id);
     e.preventDefault();
   },
-  'click .unapprove-link': function(e){
-    Meteor.call('unapprovePost', this._id);
+  'click .reject-link': function(e){
+    Meteor.call('rejectPost', this._id);
     e.preventDefault();
+  },
+  'click .delete-link': function(e){
+    var post = this;
+
+    e.preventDefault();
+
+    if(confirm("Delete “"+post.title+"”?")){
+      FlowRouter.go('postsDefault');
+      Meteor.call("deletePostById", post._id, function(error) {
+        if (error) {
+          console.log(error);
+          Messages.flash(error.reason, 'error');
+        } else {
+          Messages.flash(i18n.t('your_post_has_been_deleted'), 'success');
+        }
+      });
+    }
   }
 });

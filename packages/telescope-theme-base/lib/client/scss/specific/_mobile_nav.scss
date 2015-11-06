@@ -26,23 +26,15 @@ $mobile-nav-width: 200px;
   left: calc((100% - 60px) * -1);
   width: $mobile-nav-width;
   width: calc(100% - 60px);
-  .menu-top-level{
-    cursor: pointer;
-    font-weight: bold;
-    &:after{
-      display:inline-block;
-      position:relative;
-      top:-1px;
-      margin-left:4px;
-      content:"▼";
-      font-size:8px;
-    }
-  }
+  
   .mobile-menu-item.menu{
     display: block;
   }
   .menu-contents li{
     margin: 0;
+  }
+  .button, .btn{
+    max-width: none;
   }
 }
 
@@ -89,11 +81,14 @@ $mobile-nav-width: 200px;
     &:last-child{
       border:none;
     }
+    .menu-expanded{
+      background: white(0.1);
+    }
   }
   .menu-description{
     display: none;
   }
-  .sign-in{
+  .sign-up{
     border-bottom:1px white(0.2) solid;
     margin-right: 0px;
   }
@@ -106,42 +101,51 @@ $mobile-nav-width: 200px;
       color: white;
     }
   }
-  .menu{
-    >a{
-      &:after{
-        display:inline-block;
-        position:relative;
-        top:-1px;
-        margin-left:4px;
-        content:"▼";
-        font-size:8px;
-      }
-    }
-  }
   .mobile-menu-item>a, .menu-top-level, .sign-in, .sign-up{
     padding: 10px;
   }
   .menu-menu{
     display: none;
     background: #333;
-    li{
-      padding: 10px;
-      margin-bottom: 0;
-      border-top:1px white(0.2) solid;
-    }
   }
-  .submit{
-    margin: 10px;
+  .menu-item{
+    margin-bottom: 0;
+    border-top:1px white(0.2) solid;
+    padding: 0;
   }
-}
-
-.mobile-submit{
-  padding: 10px;
-  border-bottom:1px white(0.2) solid;
-  .button{
+  .menu-label, .menu-item-label-wrapper{
+    padding: 10px;
+  }
+  .menu-items, .menu-child-items{
+    margin: 0;
+    border-left: 15px solid rgba(255,255,255, 0.1);
+    padding-left: 0;
+  }
+  // .menu-child-items{
+  //   .menu-item-wrapper{
+  //     border-width: 30px;
+  //   }
+  //   .menu-child-items .menu-item-wrapper{
+  //     border-width: 45px;
+  //   }
+  //   .menu-child-items .menu-child-items .menu-item-wrapper{
+  //     border-width: 60px;
+  //   }
+  //   .menu-child-items .menu-child-items .menu-child-items .menu-item-wrapper{
+  //     border-width: 75px;
+  //   }
+  // }
+  .submit-button{
+    padding: 10px;
+    border-bottom:1px white(0.2) solid;
+  }
+  .btn, .button{
+    display: block;
+    width: 100%;
     max-width: none;
   }
 }
+
 
 .mobile-menu-button{
   position: absolute;
