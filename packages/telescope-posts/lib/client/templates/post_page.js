@@ -1,6 +1,9 @@
 var doSEOStuff = function (post) {
 
-  var link = {rel: "canonical", href: "post.getPageUrl(true)"};
+  // clear previously added meta tags
+  DocHead.removeDocHeadAddedTags();
+
+  var link = {rel: "canonical", href: post.getPageUrl(true)};
   DocHead.addLink(link);
   
   // Set SEO properties
@@ -82,13 +85,7 @@ Template.post_page.helpers({
   },
   canView: function () {
     var post = this;
-    var user = Meteor.user();
-    if (post.status === Posts.config.STATUS_PENDING && !Users.can.viewPendingPost(user, post)) {
-      return false;
-    } else if (post.status === Posts.config.STATUS_REJECTED && !Users.can.viewRejectedPost(user, post)) {
-      return false;
-    }
-    return true;
+    return Users.can.viewPost(Meteor.user(), post);
   },
   isPending: function () {
     return this.status === Posts.config.STATUS_PENDING;

@@ -52,8 +52,11 @@
   "sign_up_" : "Registreeri!",
   "dont_have_an_account" : "Ei ole kontot?",
   "already_have_an_account" : "On juba konto?",
+  "downvotedAt" : "Downvoted Kell",
   "sign_up" : "Registreeri",
+  "postedAt" : "Postitatud",
   "please_fill_in_all_fields" : "Palun täitke kõik väljad",
+  "upvotedAt" : "Upvoted Kell",
   "invite_" : "Kutsu",
   "left" : "jäänud",
   "invite_none_left" : "Kutsu (ühtegi pole jäänud)",
@@ -61,5 +64,8 @@
   "invited" : "Kutsutud",
   "uninvited" : "Kutsumata",
   "filter_by" : "Filtreeri",
-  "sort_by" : "Sorteeri"
+  "sort_by" : "Sorteeri",
+  "you_have_been_logged_out" : "Sa oled välja logitud",
+  "delete_users_posts_comments_as_well" : "Kustuta kasutaja postitusi ja kommentaare ka?",
+  "commentedAt" : "Viimati Kommenteeris"
 }
