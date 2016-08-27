@@ -1,1 +1,0 @@
-Telescope.subscriptions.preload("categories");
